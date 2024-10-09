@@ -11,7 +11,6 @@ interface Todo {
 }
 type todoArray = Todo[]
 
-
 function useTodo(){
     const [loading, setloading] = useState(true);
     const [todos, setTodos] = useState<todoArray>([])
@@ -60,7 +59,6 @@ export function TodoList(){
         <div >
         
             <div style={{display:"flex", justifyContent:"center"}}>
-                {console.log(authenstate.username)}
              <h2> welcome {authenstate.username}</h2>
              <div style={{marginTop: 25, marginLeft: 20}}>
                 <button onClick={()=>{

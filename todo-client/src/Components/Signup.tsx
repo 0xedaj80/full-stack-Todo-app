@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import {SignupParams} from "@ajeet80/common"
 
 
 
@@ -9,11 +9,15 @@ export function Signup(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate()
-
+     
+    let SignupParams: SignupParams = { 
+        username:username,
+        password:password
+    }
     const handlelogin = async() =>{
      const response = await fetch("http://localhost:3000/auth/signup",{
             method:"POST",
-            body:JSON.stringify({username, password}),
+            body:JSON.stringify(SignupParams),
             headers:{ 'Content-Type': 'application/json' },
 
          })

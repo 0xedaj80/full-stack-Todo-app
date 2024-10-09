@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+
+
+
+
 export function Signup(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

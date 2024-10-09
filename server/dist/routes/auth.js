@@ -16,9 +16,24 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const express_1 = __importDefault(require("express"));
 const middleware_1 = require("../middleware/");
 const db_1 = require("../db");
+const zod_1 = require("zod");
 const router = express_1.default.Router();
+const signupInput = zod_1.z.object({
+    username: zod_1.z.string().min(3).max(20),
+    password: zod_1.z.string().min(3).max(10)
+});
 router.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
+    const parsedInput = signupInput.safeParse(req.body);
+    if (!parsedInput.success) {
+        parsedInput.error;
+        res.status(411).json({
+            error: "there was an error parsing input"
+        });
+        return;
+    }
+    const username = parsedInput.data.username;
+    const password = parsedInput.data.password;
+    console.log("you reached here");
     const user = yield db_1.User.findOne({ username });
     if (user) {
         res.status(403).json({ message: 'User already exists' });
@@ -31,6 +46,7 @@ router.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 }));
 router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("reaah");
     const { username, password } = req.body;
     const user = yield db_1.User.findOne({ username, password });
     if (user) {

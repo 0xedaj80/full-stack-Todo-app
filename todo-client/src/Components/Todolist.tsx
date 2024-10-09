@@ -10,14 +10,12 @@ interface Todo {
      done:Boolean;
 }
 type todoArray = Todo[]
-export function TodoList(){
+
+
+function useTodo(){
+    const [loading, setloading] = useState(true);
     const [todos, setTodos] = useState<todoArray>([])
-    const  [title, setTitle] = useState('');
-    const [description, setDescription ] = useState(''); 
-    const navigate = useNavigate()
-    const authenstate = useRecoilValue(authState)
-    // const setauthstate = useSetRecoilState(authState)
-   
+    
     useEffect(()=>{
          const getTodos = async ()=>{
              const response = await fetch("http://localhost:3000/todo/todos",{
@@ -25,10 +23,27 @@ export function TodoList(){
              }) 
              const data = await response.json()
              setTodos(data);
-         }
+            setloading(false) 
+            }
          getTodos()
     },[authState.token])
     
+   return {
+     loading,
+     todos:todos,
+     setTodos
+   } 
+
+}
+
+
+export function TodoList(){
+    const  [title, setTitle] = useState('');
+    const [description, setDescription ] = useState(''); 
+    const navigate = useNavigate()
+    const authenstate = useRecoilValue(authState)
+    const {loading, todos, setTodos} = useTodo()   
+     
 
     const addTodo = async ()=>{
      const response = await fetch("http://localhost:3000/todo/todos", { 
